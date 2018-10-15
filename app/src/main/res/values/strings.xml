@@ -4,4 +4,5 @@
     <string name="title_dashboard">Ustawienia</string>
     <string name="title_notifications">Powiadomienia</string>
     <string name="author">Szymon Hanzel ©</string>
+    <string name="year">2018</string>
 </resources>
