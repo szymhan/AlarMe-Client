@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AlarMe Client</string>
+    <string name="title_home">AlarMe</string>
+    <string name="title_dashboard">Ustawienia</string>
+    <string name="title_notifications">Powiadomienia</string>
+    <string name="author">Szymon Hanzel ©</string>
+</resources>
