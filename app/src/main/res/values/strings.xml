@@ -5,4 +5,6 @@
     <string name="title_notifications">Powiadomienia</string>
     <string name="author">Szymon Hanzel ©</string>
     <string name="year">2018</string>
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+    <string name="switch_notifications">Powiadomienia</string>
 </resources>

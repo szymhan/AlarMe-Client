@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1077149381233",
+    "firebase_url": "https://alarme-hanzel.firebaseio.com",
+    "project_id": "alarme-hanzel",
+    "storage_bucket": "alarme-hanzel.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077149381233:android:2956811cbd2921b0",
+        "android_client_info": {
+          "package_name": "pl.szymonhanzel.alarmeclient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1077149381233-n2lcidh8e6fa5dldf96q36l7s4ctrro1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pl.szymonhanzel.alarmeclient",
+            "certificate_hash": "56f35bfa022dc1f258e6c3950fb9633914924733"
+          }
+        },
+        {
+          "client_id": "1077149381233-1gdupegj7pbq5u8c9lv0tl33as26qhsg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDx1SQYAJZw8uSYxDR_9rD5H0vp1SYd6Vk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1077149381233-1gdupegj7pbq5u8c9lv0tl33as26qhsg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
