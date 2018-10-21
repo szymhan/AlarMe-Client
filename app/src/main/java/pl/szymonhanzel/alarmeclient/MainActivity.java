@@ -1,5 +1,6 @@
 package pl.szymonhanzel.alarmeclient;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -29,7 +30,7 @@ import pl.szymonhanzel.alarmeclient.service.FirebaseDataAnalyzeService;
 public class MainActivity extends AppCompatActivity {
 
 
-    private FusedLocationProviderClient mFusedLocationClient;
+
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference("alarms");
 
@@ -63,30 +64,16 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private OnSuccessListener<Location> locationListener = new OnSuccessListener<Location>() {
-        @Override
-        public void onSuccess(Location location) {
-            if (location!=null) {
-                FirebaseDataAnalyzeService.lastKnownLocation=location;
-            }
-        }
-    };
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
        setContentView(R.layout.activity_main);
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        try {
-            mFusedLocationClient.getLastLocation().addOnSuccessListener(locationListener);
-        }catch (SecurityException se){
-            se.printStackTrace();
-        }
-
         initNavigationBar();
         myRef.addValueEventListener(valueEventListener);
+        Intent gpsService =new Intent("pl.szymonhanzel.alarmeclient.LONGRUNSERVICE");
+        getApplicationContext().startService(gpsService);
+
     }
 
 

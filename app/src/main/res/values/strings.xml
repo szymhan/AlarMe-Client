@@ -7,4 +7,5 @@
     <string name="year">2018</string>
     <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
     <string name="switch_notifications">Powiadomienia</string>
+    <string name="gps_serv_desc">AlarMe GPS Tracker</string>
 </resources>
