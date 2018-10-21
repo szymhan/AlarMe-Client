@@ -26,6 +26,7 @@ import pl.szymonhanzel.alarmeclient.fragment.AlarMeFragment;
 import pl.szymonhanzel.alarmeclient.enumerator.NavigationEnum;
 import pl.szymonhanzel.alarmeclient.fragment.SettingsFragment;
 import pl.szymonhanzel.alarmeclient.service.FirebaseDataAnalyzeService;
+import pl.szymonhanzel.alarmeclient.service.GPSService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -71,14 +72,14 @@ public class MainActivity extends AppCompatActivity {
        setContentView(R.layout.activity_main);
         initNavigationBar();
         myRef.addValueEventListener(valueEventListener);
-        Intent gpsService =new Intent("pl.szymonhanzel.alarmeclient.LONGRUNSERVICE");
+        Intent gpsService =new Intent(getApplicationContext(),GPSService.class);
         getApplicationContext().startService(gpsService);
 
     }
 
 
     private void initNavigationBar() {
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         initFragment(NavigationEnum.HOME);
     }

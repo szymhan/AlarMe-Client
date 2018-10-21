@@ -8,4 +8,6 @@
     <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
     <string name="switch_notifications">Powiadomienia</string>
     <string name="gps_serv_desc">AlarMe GPS Tracker</string>
+    <string name="channel_name">AlarMe</string>
+    <string name="channel_description">Współrzędne urządzenia</string>
 </resources>
