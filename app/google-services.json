@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "1077149381233-6vsdh9hs7gh06ocp17u824iquijj2npa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pl.szymonhanzel.alarmeclient",
+            "certificate_hash": "8fcbddbb3cd5c322290c442a2a5676c5ec1514af"
+          }
+        },
+        {
           "client_id": "1077149381233-1gdupegj7pbq5u8c9lv0tl33as26qhsg.apps.googleusercontent.com",
           "client_type": 3
         }
