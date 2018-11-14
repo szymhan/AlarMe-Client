@@ -14,12 +14,14 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import pl.szymonhanzel.alarmeclient.MainActivity;
 import pl.szymonhanzel.alarmeclient.R;
+import pl.szymonhanzel.alarmeclient.context.MyApplication;
 
 /**
  * SplashScreen jest używany do wywołania podstawowych metod i usług w tle, by poprawić
@@ -37,6 +39,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         getFirebaseToken();
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         createNotificationChannel();
+        MyApplication.setDb(FirebaseFirestore.getInstance());
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

@@ -20,6 +20,7 @@ public class NotificationService {
                 .setSmallIcon(R.drawable.alarm)
                 .setContentTitle(textTitle)
                 .setContentText(textContent)
+                .setOngoing(true)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 // notificationId is a unique int for each notification that you must define
         int notificationId =(int) (Math.random()*100);

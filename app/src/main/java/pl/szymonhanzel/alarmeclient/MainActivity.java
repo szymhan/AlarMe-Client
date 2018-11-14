@@ -1,39 +1,23 @@
 package pl.szymonhanzel.alarmeclient;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
+import pl.szymonhanzel.alarmeclient.component.PermissionChecker;
 import pl.szymonhanzel.alarmeclient.fragment.AlarMeFragment;
 import pl.szymonhanzel.alarmeclient.enumerator.NavigationEnum;
 import pl.szymonhanzel.alarmeclient.fragment.SettingsFragment;
-import pl.szymonhanzel.alarmeclient.service.FirebaseDataAnalyzeService;
 import pl.szymonhanzel.alarmeclient.service.GPSService;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference myRef = database.getReference("alarms");
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -53,17 +37,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private ValueEventListener valueEventListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            FirebaseDataAnalyzeService.analyzeData(dataSnapshot);
-        }
 
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +45,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
        setContentView(R.layout.activity_main);
         initNavigationBar();
-        myRef.addValueEventListener(valueEventListener);
         Intent gpsService =new Intent(getApplicationContext(),GPSService.class);
         getApplicationContext().startService(gpsService);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    private void checkPermissions() {
+        if (!PermissionChecker.isGPSEnabled(getApplicationContext())){
+            showGPSEnablingDialog();
+        }
     }
 
 
@@ -97,5 +81,37 @@ public class MainActivity extends AppCompatActivity {
         }
 
         ft.commit();
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        checkPermissions();
+    }
+
+    private void showGPSEnablingDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle(R.string.gps_not_found_title);  // GPS not found
+        builder.setMessage(R.string.gps_not_found_message); // Want to enable?
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            }
+        });
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        GPSService.cancelNotification();
     }
 }

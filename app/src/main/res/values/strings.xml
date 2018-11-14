@@ -10,4 +10,8 @@
     <string name="gps_serv_desc">AlarMe GPS Tracker</string>
     <string name="channel_name">AlarMe</string>
     <string name="channel_description">Współrzędne urządzenia</string>
+    <string name="gps_not_found_title">GPS jest wyłączony</string>
+    <string name="gps_not_found_message">Czy chcesz uruchomić?</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
 </resources>
