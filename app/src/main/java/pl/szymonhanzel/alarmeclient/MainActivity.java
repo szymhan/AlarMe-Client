@@ -112,6 +112,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        GPSService.cancelNotification();
+        GPSService.cancelNotifications();
     }
 }

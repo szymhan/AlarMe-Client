@@ -2,6 +2,7 @@ package pl.szymonhanzel.alarmeclient.context;
 
 import android.app.Application;
 import android.content.Context;
+import android.location.Location;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -9,6 +10,8 @@ public class MyApplication extends Application {
     private static final String SHARED_PREFERENCES_NAME = "MyPref";
     private static Application sApplication;
     private static FirebaseFirestore dbReference;
+    private static String token;
+    private static Location lastKnownLocation;
 
     public static FirebaseFirestore getDb(){
         return dbReference;
@@ -26,6 +29,22 @@ public class MyApplication extends Application {
     }
     public static String getSharedPreferencesName() {
         return SHARED_PREFERENCES_NAME;
+    }
+
+    public static String getToken() {
+        return token;
+    }
+
+    public static void setToken(String token) {
+        MyApplication.token = token;
+    }
+
+    public static Location getLastKnownLocation() {
+        return lastKnownLocation;
+    }
+
+    public static void setLastKnownLocation(Location lastKnownLocation) {
+        MyApplication.lastKnownLocation = lastKnownLocation;
     }
 
     @Override

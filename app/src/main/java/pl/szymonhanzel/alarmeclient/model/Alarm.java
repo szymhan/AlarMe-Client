@@ -3,24 +3,22 @@ package pl.szymonhanzel.alarmeclient.model;
 
 import com.google.firebase.Timestamp;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Locale;
+import pl.szymonhanzel.alarmeclient.context.MyApplication;
 
 public class Alarm {
 
-    private double longitude, latitude;
-    private String macAddress;
+    private double longitude, latitude,altitude;
+    private String token;
     private Timestamp timestamp;
 
     public Alarm() {
     }
 
-    public Alarm (double longitude, double latitude){
-        macAddress="LBALBLALBAA";
+    public Alarm (double longitude, double latitude,double altitude){
+        token =MyApplication.getToken();
         this.latitude=latitude;
         this.longitude=longitude;
+        this.altitude=altitude;
         timestamp = Timestamp.now();
     }
 
@@ -40,12 +38,12 @@ public class Alarm {
         this.latitude = latitude;
     }
 
-    public String getMacAddress() {
-        return macAddress;
+    public String getToken() {
+        return token;
     }
 
-    public void setMacAddress(String macAddress) {
-        this.macAddress = macAddress;
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public Timestamp getTimestamp() {

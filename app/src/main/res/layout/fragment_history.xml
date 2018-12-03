@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.HistoryFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/history_fragment_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_history"
+        android:fontFamily="@font/paytone"
+        android:textSize="30sp"
+       android:textAlignment="center"/>
+    <ListView
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/history_fragment_title"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/history_listview"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10sp"
+        android:listSelector="@android:color/transparent">
+
+    </ListView>
+
+</RelativeLayout>

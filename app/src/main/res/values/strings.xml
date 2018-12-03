@@ -3,6 +3,7 @@
     <string name="title_home">AlarMe</string>
     <string name="title_dashboard">Ustawienia</string>
     <string name="title_notifications">Powiadomienia</string>
+    <string name="title_history">Historia alarmów</string>
     <string name="author">Szymon Hanzel ©</string>
     <string name="year">2018</string>
     <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
@@ -14,4 +15,7 @@
     <string name="gps_not_found_message">Czy chcesz uruchomić?</string>
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

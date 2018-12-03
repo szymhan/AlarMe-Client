@@ -16,7 +16,6 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
@@ -37,6 +36,7 @@ public class GPSService extends Service implements
     private static final String CHANNEL_ID = "1995";
     private static int notificationID;
     private static int PERMISSION_ACCESS_FINE_LOCATION = 1;
+    private int firebaseSaveDataCounter =0;
 
     private boolean currentlyProcessingLocation = false;
     private LocationRequest locationRequest;
@@ -82,8 +82,8 @@ public class GPSService extends Service implements
         Log.d(TAG, "onConnected");
 
         locationRequest = LocationRequest.create();
-        locationRequest.setInterval(120000); // milliseconds
-        locationRequest.setFastestInterval(10000); // the fastest rate in milliseconds at which your app can handle location updates
+        locationRequest.setInterval(10000); // milliseconds
+        locationRequest.setFastestInterval(1000); // the fastest rate in milliseconds at which your app can handle location updates
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         try {
@@ -119,8 +119,15 @@ public class GPSService extends Service implements
         System.out.println("accuracy: "+location.getAccuracy());
         System.out.println("x: "+location.getLongitude());
         System.out.println("y: "+ location.getLatitude());
+        System.out.println("h :" + location.getAltitude());
         System.out.println("bearing: "+ location.getBearing());
-        FirebaseDataAnalyzeService.saveData(new Alarm(location.getLongitude(),location.getLatitude()));
+        MyApplication.setLastKnownLocation(location);
+        firebaseSaveDataCounter++;
+        if(firebaseSaveDataCounter>=10){
+            FirebaseDataAnalyzeService.saveData(new Alarm(location.getLongitude(),location.getLatitude(),location.getAltitude()));
+            firebaseSaveDataCounter=0;
+        }
+
        // NotificationService.buildNotification(location.getLatitude(),location.getLongitude());
     }
 
@@ -146,7 +153,7 @@ public class GPSService extends Service implements
         notificationManager.notify(notificationID, mBuilder.build());
     }
 
-    public static void cancelNotification() {
+    public static void cancelNotifications() {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MyApplication.getContext());
         notificationManager.cancelAll();
     }
@@ -154,6 +161,6 @@ public class GPSService extends Service implements
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
-        cancelNotification();
+        cancelNotifications();
     }
 }

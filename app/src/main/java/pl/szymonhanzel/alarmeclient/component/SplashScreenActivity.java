@@ -36,8 +36,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getFirebaseToken();
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        getFirebaseToken();
         createNotificationChannel();
         MyApplication.setDb(FirebaseFirestore.getInstance());
         Intent intent = new Intent(this, MainActivity.class);
@@ -57,6 +57,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                         }
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
+                        MyApplication.setToken(token);
                         // Log and toast
                         String msg = getString(R.string.msg_token_fmt, token);
                         Log.d(TAG, msg);
