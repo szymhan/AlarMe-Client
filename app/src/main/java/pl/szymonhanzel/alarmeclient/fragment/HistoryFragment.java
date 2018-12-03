@@ -41,6 +41,23 @@ public class HistoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         showList = new ArrayList<>();
         dbAdapter = new DatabaseAdapter(getContext());
+        getData();
+        listAdapter = new DatabaseListAdapter(getContext(), showList);
+        listView = view.findViewById(R.id.history_listview);
+        listView.setAdapter(listAdapter);
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
+        listAdapter.notifyDataSetChanged();
+    }
+
+    private void getData() {
+        dbAdapter.open();
         Cursor cursor = dbAdapter.getAll();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -50,15 +67,6 @@ public class HistoryFragment extends Fragment {
             ));
             cursor.moveToNext();
         }
-        listAdapter = new DatabaseListAdapter(getContext(), showList);
-        listView = view.findViewById(R.id.history_listview);
-        listView.setAdapter(listAdapter);
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        listAdapter.notifyDataSetChanged();
+        dbAdapter.close();
     }
 }

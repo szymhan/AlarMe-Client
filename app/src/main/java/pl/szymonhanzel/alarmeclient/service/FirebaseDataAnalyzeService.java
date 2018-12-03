@@ -26,7 +26,7 @@ public class FirebaseDataAnalyzeService {
     }
 
     public static void saveData(Alarm alarm){
-        MyApplication.getInstance().getDb()
+        MyApplication.getDb()
                 .collection("users")
                 .add(alarm)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
