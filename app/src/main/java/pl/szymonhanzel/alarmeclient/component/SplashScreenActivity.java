@@ -39,7 +39,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         getFirebaseToken();
         createNotificationChannel();
-        MyApplication.setDb(FirebaseFirestore.getInstance());
+        MyApplication.getInstance().setDb(FirebaseFirestore.getInstance());
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

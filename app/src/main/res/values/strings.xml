@@ -3,6 +3,7 @@
     <string name="title_home">AlarMe</string>
     <string name="title_dashboard">Ustawienia</string>
     <string name="title_notifications">Powiadomienia</string>
+    <string name="menu_title_notifications">Historia</string>
     <string name="title_history">Historia alarmów</string>
     <string name="author">Szymon Hanzel ©</string>
     <string name="year">2018</string>

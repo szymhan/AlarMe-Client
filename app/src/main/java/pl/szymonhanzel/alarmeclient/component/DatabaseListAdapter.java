@@ -47,7 +47,7 @@ public class DatabaseListAdapter extends ArrayAdapter<SQLAlarmModel> {
             case "Straż pożarna":
                 return R.drawable.firefighter;
             case "Policja" :
-                return R.drawable.policeCar;
+                return R.drawable.police_car;
             case "Ambulans" :
                 return R.drawable.ambulance;
         }

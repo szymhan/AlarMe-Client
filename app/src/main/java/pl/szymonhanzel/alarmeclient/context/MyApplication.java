@@ -9,14 +9,24 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class MyApplication extends Application {
     private static final String SHARED_PREFERENCES_NAME = "MyPref";
     private static Application sApplication;
-    private static FirebaseFirestore dbReference;
+    private  FirebaseFirestore dbReference;
     private static String token;
     private static Location lastKnownLocation;
+    private static MyApplication instance;
 
-    public static FirebaseFirestore getDb(){
+
+    public static MyApplication getInstance() {
+        if(instance==null){
+             instance = new MyApplication();
+        }
+        return instance;
+    }
+
+    private MyApplication() {}
+    public  FirebaseFirestore getDb(){
         return dbReference;
     }
-    public static void setDb(FirebaseFirestore db){
+    public  void setDb(FirebaseFirestore db){
         dbReference=db;
     }
 

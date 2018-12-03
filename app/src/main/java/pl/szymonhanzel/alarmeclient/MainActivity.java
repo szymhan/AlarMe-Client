@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import pl.szymonhanzel.alarmeclient.component.PermissionChecker;
 import pl.szymonhanzel.alarmeclient.fragment.AlarMeFragment;
 import pl.szymonhanzel.alarmeclient.enumerator.NavigationEnum;
+import pl.szymonhanzel.alarmeclient.fragment.HistoryFragment;
 import pl.szymonhanzel.alarmeclient.fragment.SettingsFragment;
 import pl.szymonhanzel.alarmeclient.service.GPSService;
 
@@ -30,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_dashboard:
                     initFragment(NavigationEnum.SETTINGS);
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_history:
+                    initFragment(NavigationEnum.HISTORY);
                     return true;
             }
             return false;
@@ -77,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case SETTINGS:
                 ft.replace(R.id.container, new SettingsFragment());
+                break;
+            case HISTORY:
+                ft.replace(R.id.container, new HistoryFragment());
                 break;
         }
 
