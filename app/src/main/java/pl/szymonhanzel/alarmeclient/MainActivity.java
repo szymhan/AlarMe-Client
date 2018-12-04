@@ -9,6 +9,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import pl.szymonhanzel.alarmeclient.component.PermissionChecker;
 import pl.szymonhanzel.alarmeclient.fragment.AlarMeFragment;
@@ -16,6 +17,8 @@ import pl.szymonhanzel.alarmeclient.enumerator.NavigationEnum;
 import pl.szymonhanzel.alarmeclient.fragment.HistoryFragment;
 import pl.szymonhanzel.alarmeclient.fragment.SettingsFragment;
 import pl.szymonhanzel.alarmeclient.service.GPSService;
+import pl.szymonhanzel.alarmeclient.service.MyFirebaseMessagingService;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
         initNavigationBar();
         Intent gpsService =new Intent(getApplicationContext(),GPSService.class);
         getApplicationContext().startService(gpsService);
-
+        Intent messagingService = new Intent(getApplicationContext(),MyFirebaseMessagingService.class);
+        getApplicationContext().startService(messagingService);
     }
 
     @Override
@@ -92,12 +96,14 @@ public class MainActivity extends AppCompatActivity {
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         checkPermissions();
+
     }
 
     private void showGPSEnablingDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle(R.string.gps_not_found_title);  // GPS not found
         builder.setMessage(R.string.gps_not_found_message); // Want to enable?
+        builder.setCancelable(false);
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
                 startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
@@ -106,13 +112,21 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(),"Aplikacja wymaga GPS do działania.",Toast.LENGTH_SHORT).show();
+                stopGPSService();
                 dialog.cancel();
+         //       System.exit(0);
             }
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
 
+    private void stopGPSService() {
+        Intent gpsService =new Intent(getApplicationContext(),GPSService.class);
+        stopService(gpsService);
+        getApplicationContext().stopService(gpsService);
+    }
 
     @Override
     protected void onDestroy() {

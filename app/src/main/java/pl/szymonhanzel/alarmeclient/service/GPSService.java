@@ -4,7 +4,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 
-import android.app.Service;
+import android.app.IntentService;
+import android.app.Notification;
 import android.content.Intent;
 import android.location.Location;
 
@@ -26,7 +27,7 @@ import pl.szymonhanzel.alarmeclient.context.MyApplication;
 import pl.szymonhanzel.alarmeclient.model.Alarm;
 
 
-public class GPSService extends Service implements
+public class GPSService extends IntentService implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener{
@@ -34,13 +35,18 @@ public class GPSService extends Service implements
 
     private static final String TAG = "GPSService";
     private static final String CHANNEL_ID = "1995";
+    private static final int NOTIFY_ID = 1995;
+    private static final int FOREGROUND_ID = 1996;
     private static int notificationID;
-    private static int PERMISSION_ACCESS_FINE_LOCATION = 1;
     private int firebaseSaveDataCounter =0;
 
     private boolean currentlyProcessingLocation = false;
     private LocationRequest locationRequest;
     private GoogleApiClient googleApiClient;
+
+    public GPSService() {
+        super(TAG);
+    }
 
     @Override
     public void onCreate() {
@@ -78,13 +84,17 @@ public class GPSService extends Service implements
     }
 
     @Override
+    protected void onHandleIntent(@Nullable Intent intent) {
+        startForeground(NOTIFY_ID, buildNotification());
+    }
+
+    @Override
     public void onConnected(@android.support.annotation.Nullable Bundle bundle) {
         Log.d(TAG, "onConnected");
 
         locationRequest = LocationRequest.create();
-        locationRequest.setInterval(10000); // milliseconds
-        locationRequest.setFastestInterval(1000); // the fastest rate in milliseconds at which your app can handle location updates
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5 *1000); // milliseconds
+        locationRequest.setFastestInterval(5*1000); // the fastest rate in milliseconds at which your app can handle location updates
 
         try {
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
@@ -115,6 +125,7 @@ public class GPSService extends Service implements
 
     @Override
     public void onLocationChanged(Location location) {
+        Log.d(TAG,"Location changed.");
             //TODO: logika przy zarejestrowanej zmianie lokalizacji
         System.out.println("accuracy: "+location.getAccuracy());
         System.out.println("x: "+location.getLongitude());
@@ -123,7 +134,7 @@ public class GPSService extends Service implements
         System.out.println("bearing: "+ location.getBearing());
         MyApplication.setLastKnownLocation(location);
         firebaseSaveDataCounter++;
-        if(firebaseSaveDataCounter>=10){
+        if(firebaseSaveDataCounter>=4){
             FirebaseDataAnalyzeService.saveData(new Alarm(location.getLongitude(),location.getLatitude(),location.getAltitude()));
             firebaseSaveDataCounter=0;
         }
@@ -132,12 +143,14 @@ public class GPSService extends Service implements
     }
 
 
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
     }
 
-    private void buildNotification() {
+    private Notification buildNotification() {
         String textTitle = "AlarMe";
         String textContent = "Praca w tle";
 
@@ -150,17 +163,21 @@ public class GPSService extends Service implements
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 // notificationId is a unique int for each notification that you must define
          notificationID =(int) (Math.random()*100);
-        notificationManager.notify(notificationID, mBuilder.build());
+       return mBuilder.build();
     }
 
     public static void cancelNotifications() {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MyApplication.getContext());
         notificationManager.cancelAll();
+        NotificationService.buildAppNotWorkingNotification();
     }
+
+
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
         cancelNotifications();
     }
+
 }
