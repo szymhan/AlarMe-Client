@@ -8,6 +8,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.util.List;
+
 import pl.szymonhanzel.alarmeclient.context.MyApplication;
 import pl.szymonhanzel.alarmeclient.model.Alarm;
 
@@ -41,5 +43,13 @@ public class FirebaseDataAnalyzeService {
                         Log.w(TAG, "Wystąpił błąd podczas dodawania dokumentu do bazy");
                     }
                 });
+    }
+
+    public static void saveData(List<Alarm> alarms){
+        if(!alarms.isEmpty()){
+            for (Alarm alarm: alarms){
+                saveData(alarm);
+            }
+        }
     }
 }

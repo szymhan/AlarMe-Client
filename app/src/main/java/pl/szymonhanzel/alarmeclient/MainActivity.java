@@ -1,15 +1,24 @@
 package pl.szymonhanzel.alarmeclient;
 
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import pl.szymonhanzel.alarmeclient.component.PermissionChecker;
 import pl.szymonhanzel.alarmeclient.fragment.AlarMeFragment;
@@ -17,10 +26,21 @@ import pl.szymonhanzel.alarmeclient.enumerator.NavigationEnum;
 import pl.szymonhanzel.alarmeclient.fragment.HistoryFragment;
 import pl.szymonhanzel.alarmeclient.fragment.SettingsFragment;
 import pl.szymonhanzel.alarmeclient.service.GPSService;
+import pl.szymonhanzel.alarmeclient.service.GPSUpdatesLocationService;
 import pl.szymonhanzel.alarmeclient.service.MyFirebaseMessagingService;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
+GoogleApiClient.OnConnectionFailedListener{
+
+    private static final long UPDATE_INTERVAL = 10 * 1000;
+    private static final long FASTEST_UPDATE_INTERVAL = UPDATE_INTERVAL / 2;
+    private static final long MAX_WAIT_TIME = UPDATE_INTERVAL * 3;
+
+    private LocationRequest mLocationRequest;
+    private GoogleApiClient mGoogleApiClient;
+
+    private static final String TAG = "MainActivity";
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -50,8 +70,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
        setContentView(R.layout.activity_main);
         initNavigationBar();
-        Intent gpsService =new Intent(getApplicationContext(),GPSService.class);
-        getApplicationContext().startService(gpsService);
+        buildGoogleApiClient();
+      //  Intent gpsService =new Intent(getApplicationContext(),GPSService.class);
+        //getApplicationContext().startService(gpsService);
         Intent messagingService = new Intent(getApplicationContext(),MyFirebaseMessagingService.class);
         getApplicationContext().startService(messagingService);
     }
@@ -132,5 +153,69 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         GPSService.cancelNotifications();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    private void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+
+        // Sets the fastest rate for active location updates. This interval is exact, and your
+        // application will never receive updates faster than this value.
+        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        // Sets the maximum time when batched location updates are delivered. Updates may be
+        // delivered sooner than this interval.
+        mLocationRequest.setMaxWaitTime(MAX_WAIT_TIME);
+    }
+
+    public void requestLocationUpdates(View view) {
+        try {
+
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mLocationRequest, getPendingIntent());
+        } catch (SecurityException e) {
+            Log.e(TAG," Unable to request location updates in method requestLocationUpdates()");
+        }
+    }
+
+    private void buildGoogleApiClient() {
+        if (mGoogleApiClient != null) {
+            return;
+        }
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .enableAutoManage(this, this)
+                .addApi(LocationServices.API)
+                .build();
+        createLocationRequest();
+    }
+
+    private PendingIntent getPendingIntent() {
+        Intent intent = new Intent(this, GPSUpdatesLocationService.class);
+        intent.setAction(GPSUpdatesLocationService.ACTION_PROCESS_UPDATES);
+        return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    public void removeLocationUpdates(View view) {
+        Log.i(TAG, "Removing location updates");
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,
+                getPendingIntent());
     }
 }

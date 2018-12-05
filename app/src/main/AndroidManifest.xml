@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -26,7 +27,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service
+       <!-- <service
             android:name=".service.GPSService"
             android:description="@string/gps_serv_desc"
             android:enabled="true"
@@ -36,6 +37,10 @@
                 <action android:name="pl.szymonhanzel.alarmeclient.LONGRUNSERVICE" />
             </intent-filter>
         </service>
+-->
+        <service
+            android:name="pl.szymonhanzel.alarmeclient.service.GPSUpdatesLocationService"
+            android:exported="false" />
 
         <activity
             android:name=".component.SplashScreenActivity"

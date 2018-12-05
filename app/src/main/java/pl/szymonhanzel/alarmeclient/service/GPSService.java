@@ -95,6 +95,7 @@ public class GPSService extends IntentService implements
         locationRequest = LocationRequest.create();
         locationRequest.setInterval(5 *1000); // milliseconds
         locationRequest.setFastestInterval(5*1000); // the fastest rate in milliseconds at which your app can handle location updates
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         try {
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
