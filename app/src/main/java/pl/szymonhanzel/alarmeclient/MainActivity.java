@@ -28,6 +28,7 @@ import pl.szymonhanzel.alarmeclient.fragment.SettingsFragment;
 import pl.szymonhanzel.alarmeclient.service.GPSService;
 import pl.szymonhanzel.alarmeclient.service.GPSUpdatesLocationService;
 import pl.szymonhanzel.alarmeclient.service.MyFirebaseMessagingService;
+import pl.szymonhanzel.alarmeclient.service.NotificationService;
 
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
@@ -71,10 +72,12 @@ GoogleApiClient.OnConnectionFailedListener{
        setContentView(R.layout.activity_main);
         initNavigationBar();
         buildGoogleApiClient();
-      //  Intent gpsService =new Intent(getApplicationContext(),GPSService.class);
+       // Intent gpsService =new Intent(getApplicationContext(),GPSService.class);
         //getApplicationContext().startService(gpsService);
         Intent messagingService = new Intent(getApplicationContext(),MyFirebaseMessagingService.class);
         getApplicationContext().startService(messagingService);
+
+
     }
 
     @Override
@@ -83,7 +86,7 @@ GoogleApiClient.OnConnectionFailedListener{
     }
 
     private void checkPermissions() {
-        if (!PermissionChecker.isGPSEnabled(getApplicationContext())){
+        if (!PermissionChecker.isGPSEnabled(getApplicationContext()) || !PermissionChecker.permissionGPSPermissionGranted()){
             showGPSEnablingDialog();
         }
     }
@@ -117,7 +120,6 @@ GoogleApiClient.OnConnectionFailedListener{
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         checkPermissions();
-
     }
 
     private void showGPSEnablingDialog() {
@@ -152,21 +154,25 @@ GoogleApiClient.OnConnectionFailedListener{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        GPSService.cancelNotifications();
+        NotificationService.cancelNotifications();
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-
+        createLocationRequest();
+        requestLocationUpdates();
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        final String text = "Connection suspended";
+        Log.w(TAG, text + ": Error code: " + i);
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        final String text = "Exception while connecting to Google Play services";
+        Log.w(TAG, text + ": " + connectionResult.getErrorMessage());
 
     }
 
@@ -185,7 +191,7 @@ GoogleApiClient.OnConnectionFailedListener{
         mLocationRequest.setMaxWaitTime(MAX_WAIT_TIME);
     }
 
-    public void requestLocationUpdates(View view) {
+    public void requestLocationUpdates() {
         try {
 
             LocationServices.FusedLocationApi.requestLocationUpdates(
@@ -201,10 +207,13 @@ GoogleApiClient.OnConnectionFailedListener{
         }
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
-                .enableAutoManage(this, this)
+                .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
-        createLocationRequest();
+
+        if (!mGoogleApiClient.isConnected() || !mGoogleApiClient.isConnecting()) {
+            mGoogleApiClient.connect();
+        }
     }
 
     private PendingIntent getPendingIntent() {

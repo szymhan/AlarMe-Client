@@ -1,5 +1,6 @@
 package pl.szymonhanzel.alarmeclient.service;
 
+import android.app.Notification;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
@@ -25,6 +26,27 @@ public class NotificationService {
 // notificationId is a unique int for each notification that you must define
         int notificationID =(int) (Math.random()*100);
         notificationManager.notify(notificationID, mBuilder.build());
+    }
+
+
+    public static Notification buildNotification() {
+        String textTitle = "AlarMe";
+        String textContent = "Praca w tle";
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyApplication.getContext(), CHANNEL_ID)
+                .setSmallIcon(R.drawable.alarm)
+                .setContentTitle(textTitle)
+                .setContentText(textContent)
+                .setOngoing(true)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+// notificationId is a unique int for each notification that you must define
+        return mBuilder.build();
+    }
+
+    public static void cancelNotifications() {
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MyApplication.getContext());
+        notificationManager.cancelAll();
+        NotificationService.buildAppNotWorkingNotification();
     }
 
 }

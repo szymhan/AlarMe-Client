@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:name=".context.MyApplication"
@@ -39,8 +40,9 @@
         </service>
 -->
         <service
-            android:name="pl.szymonhanzel.alarmeclient.service.GPSUpdatesLocationService"
-            android:exported="false" />
+            android:name=".service.GPSUpdatesLocationService"
+            android:exported="false">
+        </service>
 
         <activity
             android:name=".component.SplashScreenActivity"

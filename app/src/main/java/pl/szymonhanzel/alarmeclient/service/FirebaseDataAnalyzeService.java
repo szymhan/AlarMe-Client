@@ -45,10 +45,11 @@ public class FirebaseDataAnalyzeService {
                 });
     }
 
-    public static void saveData(List<Alarm> alarms){
-        if(!alarms.isEmpty()){
-            for (Alarm alarm: alarms){
-                saveData(alarm);
+    public static void saveData(List<Location> locations){
+        if(!locations.isEmpty()){
+            for (Location location: locations){
+                Alarm alarmToSave = new Alarm(location.getLongitude(),location.getLatitude(),location.getAltitude());
+                saveData(alarmToSave);
             }
         }
     }

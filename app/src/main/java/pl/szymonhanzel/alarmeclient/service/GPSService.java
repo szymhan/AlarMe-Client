@@ -85,7 +85,7 @@ public class GPSService extends IntentService implements
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        startForeground(NOTIFY_ID, buildNotification());
+       // startForeground(NOTIFY_ID, buildNotification());
     }
 
     @Override
