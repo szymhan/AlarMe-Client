@@ -25,7 +25,6 @@ import pl.szymonhanzel.alarmeclient.fragment.AlarMeFragment;
 import pl.szymonhanzel.alarmeclient.enumerator.NavigationEnum;
 import pl.szymonhanzel.alarmeclient.fragment.HistoryFragment;
 import pl.szymonhanzel.alarmeclient.fragment.SettingsFragment;
-import pl.szymonhanzel.alarmeclient.service.GPSService;
 import pl.szymonhanzel.alarmeclient.service.GPSUpdatesLocationService;
 import pl.szymonhanzel.alarmeclient.service.MyFirebaseMessagingService;
 import pl.szymonhanzel.alarmeclient.service.NotificationService;
@@ -146,9 +145,7 @@ GoogleApiClient.OnConnectionFailedListener{
     }
 
     private void stopGPSService() {
-        Intent gpsService =new Intent(getApplicationContext(),GPSService.class);
-        stopService(gpsService);
-        getApplicationContext().stopService(gpsService);
+    //TODO: w przypadku negatywnej odpowiedzi powinniśmy coś zrobić z aplikacją (zamknięcie/ notyfikacja?)
     }
 
     @Override

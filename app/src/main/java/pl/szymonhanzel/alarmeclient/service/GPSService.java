@@ -133,7 +133,7 @@ public class GPSService extends IntentService implements
         System.out.println("y: "+ location.getLatitude());
         System.out.println("h :" + location.getAltitude());
         System.out.println("bearing: "+ location.getBearing());
-        MyApplication.setLastKnownLocation(location);
+        //MyApplication.setLastKnownLocation(location);
         firebaseSaveDataCounter++;
         if(firebaseSaveDataCounter>=4){
             FirebaseDataAnalyzeService.saveData(new Alarm(location.getLongitude(),location.getLatitude(),location.getAltitude()));

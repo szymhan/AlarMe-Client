@@ -11,7 +11,7 @@ public class MyApplication extends Application {
     private static Application sApplication;
     private static   FirebaseFirestore dbReference;
     private static String token;
-    private static Location lastKnownLocation;
+
 
 
 
@@ -41,13 +41,6 @@ public class MyApplication extends Application {
         MyApplication.token = token;
     }
 
-    public static Location getLastKnownLocation() {
-        return lastKnownLocation;
-    }
-
-    public static void setLastKnownLocation(Location lastKnownLocation) {
-        MyApplication.lastKnownLocation = lastKnownLocation;
-    }
 
     @Override
     public void onCreate() {

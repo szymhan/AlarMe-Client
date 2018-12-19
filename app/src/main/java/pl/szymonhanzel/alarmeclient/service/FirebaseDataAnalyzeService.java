@@ -13,6 +13,7 @@ import java.util.List;
 import pl.szymonhanzel.alarmeclient.context.MyApplication;
 import pl.szymonhanzel.alarmeclient.model.Alarm;
 
+
 public class FirebaseDataAnalyzeService {
 
     private static final String TAG = "FirebaseDataAnalyzeServ";

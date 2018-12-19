@@ -58,6 +58,7 @@ public class GPSUpdatesLocationService extends IntentService {
                 LocationResult result = LocationResult.extractResult(intent);
                 if (result != null) {
                     List<Location> locations = result.getLocations();
+                    FirebaseDataAnalyzeService.setLastKnownLocation(locations.get(0));
                     FirebaseDataAnalyzeService.saveData(locations);
                     Log.i(TAG, "Location update ended successfully");
                 }
