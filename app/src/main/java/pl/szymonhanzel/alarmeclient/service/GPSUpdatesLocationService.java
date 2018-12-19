@@ -30,23 +30,21 @@ public class GPSUpdatesLocationService extends IntentService {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "Service onCreate() invoked.");
+        if(!currentlyProcessingLocation) {
+            currentlyProcessingLocation =true;
+            startForeground(1996,NotificationService.buildNotification());
+        }
     }
 
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
         super.onStartCommand(intent,flags,startId);
-        if(!currentlyProcessingLocation) {
-            currentlyProcessingLocation =true;
-            startForeground(1995,NotificationService.buildNotification());
-        }
-
         return START_NOT_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
     }
 
     @Override

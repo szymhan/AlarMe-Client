@@ -10,7 +10,7 @@ import pl.szymonhanzel.alarmeclient.context.MyApplication;
 public class NotificationService {
 
     private static final String TAG = "NotificationService";
-    private static final String CHANNEL_ID = "1995";
+    private static final String CHANNEL_ID = "1996";
     //latitude - szerokosc geo (N/S), longitude - długość geo (W/E)
 
     public static void buildAppNotWorkingNotification() {

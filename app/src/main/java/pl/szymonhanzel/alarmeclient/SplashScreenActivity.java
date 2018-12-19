@@ -1,4 +1,4 @@
-package pl.szymonhanzel.alarmeclient.component;
+package pl.szymonhanzel.alarmeclient;
 
 import android.Manifest;
 import android.app.NotificationChannel;
@@ -31,7 +31,7 @@ import pl.szymonhanzel.alarmeclient.context.MyApplication;
 public class SplashScreenActivity extends AppCompatActivity {
 
     private static final String TAG = "SplashActivity";
-    private static final String CHANNEL_ID = "1995";
+    private static final String CHANNEL_ID = "1996";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                         String msg = getString(R.string.msg_token_fmt, token);
                         Log.d(TAG, msg);
                     //    Toast.makeText(SplashScreenActivity.this, msg, Toast.LENGTH_SHORT).show();
-                        FirebaseMessaging.getInstance().subscribeToTopic("alarms");
+                        MyApplication.setMessagingReference(FirebaseMessaging.getInstance());
+                        MyApplication.getMessagingReference().subscribeToTopic("alarms");
+                        System.out.println("Firebase Messaging AutoInitEnabled :"
+                                + MyApplication.getMessagingReference().isAutoInitEnabled());
                     }
                 });
 
@@ -70,7 +73,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
+        // the NotificationChannel class is new a i9nd not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.channel_name);
             String description = getString(R.string.channel_description);

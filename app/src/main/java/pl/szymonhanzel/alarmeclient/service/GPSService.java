@@ -1,3 +1,4 @@
+/*
 package pl.szymonhanzel.alarmeclient.service;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -182,3 +183,4 @@ public class GPSService extends IntentService implements
     }
 
 }
+*/
