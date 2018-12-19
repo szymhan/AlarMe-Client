@@ -81,6 +81,7 @@ GoogleApiClient.OnConnectionFailedListener{
 
     @Override
     protected void onResume() {
+
         super.onResume();
     }
 

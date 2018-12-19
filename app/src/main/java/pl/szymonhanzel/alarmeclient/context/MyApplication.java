@@ -13,9 +13,12 @@ public class MyApplication extends Application {
     private static   FirebaseFirestore dbReference;
     private static String token;
     private static FirebaseMessaging messagingReference;
+    private static final double DISTANCE = 1000;
 
 
-
+    public static double getDISTANCE() {
+        return DISTANCE;
+    }
 
     public static FirebaseFirestore getDb(){
         return dbReference;
