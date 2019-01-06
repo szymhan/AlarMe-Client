@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_title_legend"
+        android:fontFamily="@font/paytone"
+        android:textAlignment="center"
+        android:textSize="30sp"/>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+    <LinearLayout
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ambulance"/>
+        <Space
+            android:layout_width="30dp"
+            android:layout_height="0dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/vehicle_ambulance"
+            android:fontFamily="@font/paytone"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:gravity="center_vertical"/>
+    </LinearLayout>
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="10dp" />
+    <LinearLayout
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/police_car"/>
+        <Space
+            android:layout_width="30dp"
+            android:layout_height="0dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/vehicle_police"
+            android:fontFamily="@font/paytone"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:gravity="center_vertical"/>
+    </LinearLayout>
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="10dp" />
+
+    <LinearLayout
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/firefighter"/>
+        <Space
+            android:layout_width="30dp"
+            android:layout_height="0dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/vehicle_firecar"
+            android:fontFamily="@font/paytone"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:gravity="center_vertical"/>
+    </LinearLayout>
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="10dp" />
+
+    <LinearLayout
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/blood_transport"/>
+        <Space
+            android:layout_width="30dp"
+            android:layout_height="0dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/vehicle_blood"
+            android:fontFamily="@font/paytone"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:gravity="center_vertical"/>
+    </LinearLayout>
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="10dp" />
+
+    <LinearLayout
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/car"/>
+        <Space
+            android:layout_width="30dp"
+            android:layout_height="0dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/vehicle_unknown"
+            android:fontFamily="@font/paytone"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:gravity="center_vertical"/>
+    </LinearLayout>
+
+
+</LinearLayout>

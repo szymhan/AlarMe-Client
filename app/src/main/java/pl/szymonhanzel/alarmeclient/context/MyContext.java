@@ -2,12 +2,15 @@ package pl.szymonhanzel.alarmeclient.context;
 
 import android.app.Application;
 import android.content.Context;
-import android.location.Location;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-public class MyApplication extends Application {
+/**
+ * Klasa zadeklarowana w manifeście, pozwalająca na przekazywanie
+ * kontekstu aplikacji do klas nie będąych aktywnościami/fragmentami
+ */
+public class MyContext extends Application {
     private static final String SHARED_PREFERENCES_NAME = "MyPref";
     private static Application sApplication;
     private static   FirebaseFirestore dbReference;
@@ -43,7 +46,7 @@ public class MyApplication extends Application {
     }
 
     public static void setToken(String token) {
-        MyApplication.token = token;
+        MyContext.token = token;
     }
 
     public static FirebaseMessaging getMessagingReference() {
@@ -51,7 +54,7 @@ public class MyApplication extends Application {
     }
 
     public static void setMessagingReference(FirebaseMessaging messagingReference) {
-        MyApplication.messagingReference = messagingReference;
+        MyContext.messagingReference = messagingReference;
     }
 
 

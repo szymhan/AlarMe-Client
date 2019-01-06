@@ -1,21 +1,17 @@
 package pl.szymonhanzel.alarmeclient.component;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.support.v4.content.ContextCompat;
 
-import pl.szymonhanzel.alarmeclient.R;
-import pl.szymonhanzel.alarmeclient.context.MyApplication;
+import pl.szymonhanzel.alarmeclient.context.MyContext;
 
 public class PermissionChecker {
 
     public static boolean permissionGPSPermissionGranted() {
-        if (ContextCompat.checkSelfPermission(MyApplication.getContext(),
+        if (ContextCompat.checkSelfPermission(MyContext.getContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED ) {
            return false;

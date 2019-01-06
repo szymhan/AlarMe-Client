@@ -1,13 +1,13 @@
 package pl.szymonhanzel.alarmeclient.enumerator;
 
-public enum Geo_Parameters {
+public enum Geo_ParametersEnum {
     ALTITUDE("altitude"),
     LONGITUDE("longitude"),
     LATITUDE("latitude");
 
     private String parameter;
 
-     Geo_Parameters(String parameter){
+     Geo_ParametersEnum(String parameter){
         this.parameter = parameter;
     }
 

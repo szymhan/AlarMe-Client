@@ -24,7 +24,7 @@ import com.google.android.gms.location.LocationServices;
 import org.jetbrains.annotations.Nullable;
 
 import pl.szymonhanzel.alarmeclient.R;
-import pl.szymonhanzel.alarmeclient.context.MyApplication;
+import pl.szymonhanzel.alarmeclient.context.MyContext;
 import pl.szymonhanzel.alarmeclient.model.Alarm;
 
 
@@ -134,7 +134,7 @@ public class GPSService extends IntentService implements
         System.out.println("y: "+ location.getLatitude());
         System.out.println("h :" + location.getAltitude());
         System.out.println("bearing: "+ location.getBearing());
-        //MyApplication.setLastKnownLocation(location);
+        //MyContext.setLastKnownLocation(location);
         firebaseSaveDataCounter++;
         if(firebaseSaveDataCounter>=4){
             FirebaseDataAnalyzeService.saveData(new Alarm(location.getLongitude(),location.getLatitude(),location.getAltitude()));
@@ -156,8 +156,8 @@ public class GPSService extends IntentService implements
         String textTitle = "AlarMe";
         String textContent = "Praca w tle";
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MyApplication.getContext());
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyApplication.getContext(), CHANNEL_ID)
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MyContext.getContext());
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyContext.getContext(), CHANNEL_ID)
                 .setSmallIcon(R.drawable.alarm)
                 .setContentTitle(textTitle)
                 .setContentText(textContent)
@@ -169,7 +169,7 @@ public class GPSService extends IntentService implements
     }
 
     public static void cancelNotifications() {
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MyApplication.getContext());
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MyContext.getContext());
         notificationManager.cancelAll();
         NotificationService.buildAppNotWorkingNotification();
     }

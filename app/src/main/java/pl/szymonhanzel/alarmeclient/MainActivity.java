@@ -24,6 +24,7 @@ import pl.szymonhanzel.alarmeclient.component.PermissionChecker;
 import pl.szymonhanzel.alarmeclient.fragment.AlarMeFragment;
 import pl.szymonhanzel.alarmeclient.enumerator.NavigationEnum;
 import pl.szymonhanzel.alarmeclient.fragment.HistoryFragment;
+import pl.szymonhanzel.alarmeclient.fragment.LegendFragment;
 import pl.szymonhanzel.alarmeclient.fragment.SettingsFragment;
 import pl.szymonhanzel.alarmeclient.service.GPSUpdatesLocationService;
 import pl.szymonhanzel.alarmeclient.service.MyFirebaseMessagingService;
@@ -56,6 +57,9 @@ GoogleApiClient.OnConnectionFailedListener{
                     return true;
                 case R.id.navigation_history:
                     initFragment(NavigationEnum.HISTORY);
+                    return true;
+                case R.id.navigation_legend :
+                    initFragment(NavigationEnum.LEGEND);
                     return true;
             }
             return false;
@@ -110,6 +114,9 @@ GoogleApiClient.OnConnectionFailedListener{
                 break;
             case HISTORY:
                 ft.replace(R.id.container, new HistoryFragment());
+                break;
+            case LEGEND:
+                ft.replace(R.id.container, new LegendFragment());
                 break;
         }
 

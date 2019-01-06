@@ -4,7 +4,7 @@ import com.google.firebase.Timestamp;
 
 import java.util.Map;
 
-import pl.szymonhanzel.alarmeclient.enumerator.Geo_Parameters;
+import pl.szymonhanzel.alarmeclient.enumerator.Geo_ParametersEnum;
 import pl.szymonhanzel.alarmeclient.service.GeocoderService;
 
 public class RemoteMessageDataModel {
@@ -14,9 +14,9 @@ public class RemoteMessageDataModel {
 
     public RemoteMessageDataModel(Map<String,String> valuesMap){
 
-        altitude = Double.parseDouble(valuesMap.get(Geo_Parameters.ALTITUDE.getParameter()));
-        longitude = Double.parseDouble(valuesMap.get(Geo_Parameters.LONGITUDE.getParameter()));
-        latitude = Double.parseDouble(valuesMap.get(Geo_Parameters.LONGITUDE.getParameter()));
+        altitude = Double.parseDouble(valuesMap.get(Geo_ParametersEnum.ALTITUDE.getParameter()));
+        longitude = Double.parseDouble(valuesMap.get(Geo_ParametersEnum.LONGITUDE.getParameter()));
+        latitude = Double.parseDouble(valuesMap.get(Geo_ParametersEnum.LATITUDE.getParameter()));
         address = GeocoderService.getAddress(latitude,longitude);
         actualDay = Timestamp.now().toString();
         vehicleType = valuesMap.get("vehicleType");

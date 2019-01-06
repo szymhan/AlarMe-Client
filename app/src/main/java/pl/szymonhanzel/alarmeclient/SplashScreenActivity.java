@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,9 +18,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import pl.szymonhanzel.alarmeclient.MainActivity;
-import pl.szymonhanzel.alarmeclient.R;
-import pl.szymonhanzel.alarmeclient.context.MyApplication;
+import pl.szymonhanzel.alarmeclient.context.MyContext;
 
 /**
  * SplashScreen jest używany do wywołania podstawowych metod i usług w tle, by poprawić
@@ -39,7 +36,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         getFirebaseToken();
         createNotificationChannel();
-        MyApplication.setDb(FirebaseFirestore.getInstance());
+        MyContext.setDb(FirebaseFirestore.getInstance());
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -57,15 +54,15 @@ public class SplashScreenActivity extends AppCompatActivity {
                         }
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
-                        MyApplication.setToken(token);
+                        MyContext.setToken(token);
                         // Log and toast
                         String msg = getString(R.string.msg_token_fmt, token);
                         Log.d(TAG, msg);
                     //    Toast.makeText(SplashScreenActivity.this, msg, Toast.LENGTH_SHORT).show();
-                        MyApplication.setMessagingReference(FirebaseMessaging.getInstance());
-                        MyApplication.getMessagingReference().subscribeToTopic("alarms");
+                        MyContext.setMessagingReference(FirebaseMessaging.getInstance());
+                        MyContext.getMessagingReference().subscribeToTopic("alarms");
                         System.out.println("Firebase Messaging AutoInitEnabled :"
-                                + MyApplication.getMessagingReference().isAutoInitEnabled());
+                                + MyContext.getMessagingReference().isAutoInitEnabled());
                     }
                 });
 

@@ -1,5 +1,7 @@
 package pl.szymonhanzel.alarmeclient.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -25,6 +28,32 @@ public class HistoryFragment extends Fragment {
     private List<SQLAlarmModel> showList;
     private DatabaseAdapter dbAdapter;
     private DatabaseListAdapter listAdapter;
+    private Button clearButton;
+
+    private View.OnClickListener clearButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.sql_delete_all_title);  // GPS not found
+            builder.setMessage(R.string.sql_delete_all_text); // Want to enable?
+            builder.setCancelable(false);
+            builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    clearHistory();
+                    listAdapter.notifyDataSetChanged();
+                }
+            });
+            builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    //       System.exit(0);
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,9 +70,10 @@ public class HistoryFragment extends Fragment {
         dbAdapter = new DatabaseAdapter(getContext());
         getData();
         listAdapter = new DatabaseListAdapter(getContext(), showList);
-        listView = view.findViewById(R.id.history_listview);
+        listView = view.findViewById(R.id.history_fragment_listview);
         listView.setAdapter(listAdapter);
-
+        clearButton = view.findViewById(R.id.history_fragment_clear_button);
+        clearButton.setOnClickListener(clearButtonListener);
     }
 
 
@@ -55,8 +85,10 @@ public class HistoryFragment extends Fragment {
     }
 
     private void getData() {
+        showList.clear();
         dbAdapter.open();
         Cursor cursor = dbAdapter.getAll();
+
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             showList.add(new SQLAlarmModel(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_VEHICLE_TYPE)),
@@ -65,6 +97,16 @@ public class HistoryFragment extends Fragment {
             ));
             cursor.moveToNext();
         }
+
         dbAdapter.close();
+
+    }
+
+    private void clearHistory() {
+        showList.clear();
+        dbAdapter.open();
+        dbAdapter.deleteAll();
+        dbAdapter.close();
+
     }
 }

@@ -4,11 +4,13 @@
     <string name="title_dashboard">Ustawienia</string>
     <string name="title_notifications">Powiadomienia</string>
     <string name="menu_title_notifications">Historia</string>
+    <string name="menu_title_legend">Legenda</string>
     <string name="title_history">Historia alarmów</string>
     <string name="author">Szymon Hanzel ©</string>
     <string name="year">2018</string>
     <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
     <string name="switch_notifications">Powiadomienia</string>
+    <string name="switch_sound">Dźwięk alarmu</string>
     <string name="gps_serv_desc">AlarMe GPS Tracker</string>
     <string name="channel_name">AlarMe</string>
     <string name="channel_description">Współrzędne urządzenia</string>
@@ -18,7 +20,17 @@
     <string name="no">Nie</string>
     <string name="direction">Kierunek</string>
     <string name="distance">Odległość :</string>
-
+    <string name="alarm">ALARM !</string>
+    <string name="address">Adres :</string>
+    <string name="close">ZAMKNIJ</string>
+    <string name="clear">WYCZYŚĆ</string>
+    <string name="sql_delete_all_title">Uwaga!</string>
+    <string name="sql_delete_all_text">Czy na pewno chcesz usunąć historię?</string>
+    <string name="vehicle_ambulance">Ambulans</string>
+    <string name="vehicle_police">Radiowóz</string>
+    <string name="vehicle_blood">Transport krwi</string>
+    <string name="vehicle_firecar">Wóz strażacki</string>
+    <string name="vehicle_unknown">Nierozpoznany pojazd</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

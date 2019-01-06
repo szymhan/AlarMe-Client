@@ -29,7 +29,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
                 LocationResult result = LocationResult.extractResult(intent);
                 if (result != null) {
                     List<Location> locations = result.getLocations();
-                    //MyApplication.setLastKnownLocation();
+                    //MyContext.setLastKnownLocation();
                     FirebaseDataAnalyzeService.saveData(locations);
                     Log.i(TAG, "Location update ended successfully");
                 }

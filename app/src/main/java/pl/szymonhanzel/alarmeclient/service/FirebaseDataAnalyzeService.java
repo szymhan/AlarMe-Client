@@ -3,27 +3,27 @@ package pl.szymonhanzel.alarmeclient.service;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import pl.szymonhanzel.alarmeclient.component.PermissionChecker;
-import pl.szymonhanzel.alarmeclient.context.MyApplication;
-import pl.szymonhanzel.alarmeclient.enumerator.VehicleEnum;
+import pl.szymonhanzel.alarmeclient.context.MyContext;
 import pl.szymonhanzel.alarmeclient.model.Alarm;
+import pl.szymonhanzel.alarmeclient.model.RemoteMessageDataModel;
 
 
 public class FirebaseDataAnalyzeService {
 
     private static final String TAG = "FirebaseDataAnalyzeServ";
     private static Location lastKnownLocation;
-    private static final List<String> VEHICLE_TYPES = Arrays.asList("Straż pożarna","Pogotowie","Policja","Transport krwi");
+    private static String vehicleTypeName;
 
 
     public static Location getLastKnownLocation() {
@@ -35,7 +35,7 @@ public class FirebaseDataAnalyzeService {
     }
 
     public static void saveData(Alarm alarm){
-        MyApplication.getDb()
+        MyContext.getDb()
                 .collection("users")
                 .add(alarm)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -61,15 +61,31 @@ public class FirebaseDataAnalyzeService {
         }
     }
     public static boolean validateAlarm(Map<String,String> valuesMap) {
-        if(valuesMap.containsKey("altitude")
+        return valuesMap.containsKey("altitude")
                 && valuesMap.containsKey("latitude")
                 && valuesMap.containsKey("vehicleType")
-                && valuesMap.containsKey("longitude")){
-            return VEHICLE_TYPES.contains(valuesMap.get("vehicleType"));
+                && valuesMap.containsKey("longitude");
 
-        } else {
-            return false;
-        }
+    }
 
+    public static void convertVehicleTypeName(final RemoteMessageDataModel rmdm) {
+        DocumentReference docRef = MyContext.getDb().document("vehicles");
+        vehicleTypeName = "";
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot ds = task.getResult();
+                    if (ds.exists() && ds.getString(rmdm.getVehicleType())!=null) {
+                        vehicleTypeName = ds.getString(rmdm.getVehicleType());
+                    } else {
+                        vehicleTypeName = ds.getString("0");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+        rmdm.setVehicleType(vehicleTypeName);
     }
 }

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.HistoryFragment">
+    >
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -15,16 +15,37 @@
         android:fontFamily="@font/paytone"
         android:textSize="30sp"
        android:textAlignment="center"/>
-    <ListView
-        android:layout_marginTop="10dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/history_fragment_title"
+        android:id="@+id/history_fragment_button_linear_layout"
+        android:orientation="vertical">
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:gravity="center_horizontal"
+            android:id="@+id/history_fragment_clear_button"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/paytone"
+            android:text="@string/clear"/>
+    </LinearLayout>
+    <ListView
+
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="50dp"
+        android:layout_below="@+id/history_fragment_button_linear_layout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/history_listview"
+        android:id="@+id/history_fragment_listview"
         android:divider="@android:color/transparent"
         android:dividerHeight="10sp"
         android:listSelector="@android:color/transparent">
 
     </ListView>
+
+
+
+
 
 </RelativeLayout>

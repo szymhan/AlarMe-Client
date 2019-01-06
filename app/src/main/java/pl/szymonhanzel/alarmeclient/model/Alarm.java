@@ -3,7 +3,7 @@ package pl.szymonhanzel.alarmeclient.model;
 
 import com.google.firebase.Timestamp;
 
-import pl.szymonhanzel.alarmeclient.context.MyApplication;
+import pl.szymonhanzel.alarmeclient.context.MyContext;
 
 public class Alarm {
 
@@ -15,7 +15,7 @@ public class Alarm {
     }
 
     public Alarm (double longitude, double latitude,double altitude){
-        token =MyApplication.getToken();
+        token =MyContext.getToken();
         this.latitude=latitude;
         this.longitude=longitude;
         this.altitude=altitude;

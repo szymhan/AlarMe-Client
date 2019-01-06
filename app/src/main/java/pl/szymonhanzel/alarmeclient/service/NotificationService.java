@@ -5,7 +5,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
 import pl.szymonhanzel.alarmeclient.R;
-import pl.szymonhanzel.alarmeclient.context.MyApplication;
+import pl.szymonhanzel.alarmeclient.context.MyContext;
 
 public class NotificationService {
 
@@ -17,8 +17,8 @@ public class NotificationService {
         String textTitle = "AlarMe";
         String textContent = "Usługa wyłączona";
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MyApplication.getContext());
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyApplication.getContext(), CHANNEL_ID)
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MyContext.getContext());
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyContext.getContext(), CHANNEL_ID)
                 .setSmallIcon(R.drawable.alarm)
                 .setContentTitle(textTitle)
                 .setContentText(textContent)
@@ -33,7 +33,7 @@ public class NotificationService {
         String textTitle = "AlarMe";
         String textContent = "Praca w tle";
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyApplication.getContext(), CHANNEL_ID)
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyContext.getContext(), CHANNEL_ID)
                 .setSmallIcon(R.drawable.alarm)
                 .setContentTitle(textTitle)
                 .setContentText(textContent)
@@ -44,7 +44,7 @@ public class NotificationService {
     }
 
     public static void cancelNotifications() {
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MyApplication.getContext());
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MyContext.getContext());
         notificationManager.cancelAll();
         NotificationService.buildAppNotWorkingNotification();
     }

@@ -73,6 +73,10 @@ public class DatabaseAdapter {
         return db.delete(DB_TABLE,where,null) >0;
     }
 
+    public boolean deleteAll () {
+        return db.delete(DB_TABLE,null,null) >0;
+    }
+
     public Cursor getAll () {
         String[]columns = {KEY_ID,KEY_VEHICLE_TYPE,KEY_ADDRESS,KEY_DATE};
         return db.query(DB_TABLE,columns,null,null,null,null,KEY_ID);

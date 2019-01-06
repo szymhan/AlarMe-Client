@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import pl.szymonhanzel.alarmeclient.context.MyApplication;
+import pl.szymonhanzel.alarmeclient.context.MyContext;
 
 public class GeocoderService {
 
@@ -16,7 +16,7 @@ public class GeocoderService {
     private static final String UNKNOWN_ADDRESS = "Nieznany adres";
 
     public static String getAddress(double latitude, double longitude) {
-        Geocoder gcd = new Geocoder(MyApplication.getContext(), Locale.getDefault());
+        Geocoder gcd = new Geocoder(MyContext.getContext(), Locale.getDefault());
         try {
             List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
             if (addresses.size() > 0) {

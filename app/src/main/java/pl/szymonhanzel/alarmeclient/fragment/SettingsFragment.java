@@ -11,31 +11,38 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-
 import pl.szymonhanzel.alarmeclient.R;
-import pl.szymonhanzel.alarmeclient.context.MyApplication;
+import pl.szymonhanzel.alarmeclient.context.MyContext;
 
 
 public class SettingsFragment extends Fragment {
 
     private static final String NOTIFICATIONS_KEY = "notifications";
-    Switch notificationsSwitch;
+    private static final String ALARM_SOUND_KEY = "sound";
+    Switch notificationsSwitch, soundSwitch;
 
     private Switch.OnCheckedChangeListener onCheckedChangeListener = new Switch.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            SharedPreferences sp = MyApplication.getContext().getSharedPreferences("MyPref",0);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putBoolean(NOTIFICATIONS_KEY,isChecked);
-            editor.apply();
+            saveDataInSharedPreferences(NOTIFICATIONS_KEY,isChecked);
             if(isChecked){
-                FirebaseMessaging.getInstance().subscribeToTopic("alarms");
+                soundSwitch.setClickable(true);
+                soundSwitch.setChecked(isSwitchEnabled(ALARM_SOUND_KEY));
             } else {
-                FirebaseMessaging.getInstance().unsubscribeFromTopic("alarms");
+                soundSwitch.setClickable(false);
+                saveSoundSwitchValueAndSetCheckedToFalse();
             }
         }
     };
+
+    private Switch.OnCheckedChangeListener alarmSoundSwitchCheckedListener = new Switch.OnCheckedChangeListener(){
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            saveDataInSharedPreferences(ALARM_SOUND_KEY,isChecked);
+        }
+    };
+
 
     @Nullable
     @Override
@@ -46,9 +53,33 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
        notificationsSwitch = view.findViewById(R.id.fragment_settings_notifications_switch);
-        SharedPreferences sp = MyApplication.getContext().getSharedPreferences(MyApplication.getSharedPreferencesName(),0);
+       soundSwitch = view.findViewById(R.id.fragment_settings_sound_switch);
+        SharedPreferences sp = MyContext.getContext().getSharedPreferences(MyContext.getSharedPreferencesName(),0);
         boolean isNotificationEnabled = sp.getBoolean(NOTIFICATIONS_KEY,true);
+        boolean isAlarmSoundEnabled = isNotificationEnabled && sp.getBoolean(ALARM_SOUND_KEY, true);
         notificationsSwitch.setChecked(isNotificationEnabled);
+        soundSwitch.setChecked(isAlarmSoundEnabled);
+        soundSwitch.setClickable(isNotificationEnabled);
         notificationsSwitch.setOnCheckedChangeListener(onCheckedChangeListener);
+        soundSwitch.setOnCheckedChangeListener(alarmSoundSwitchCheckedListener);
+    }
+
+    private void saveDataInSharedPreferences(String key, boolean value) {
+        SharedPreferences sp = MyContext.getContext().getSharedPreferences("MyPref",0);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(key,value);
+        editor.apply();
+    }
+
+    private boolean isSwitchEnabled(String key) {
+        SharedPreferences sp = MyContext.getContext().getSharedPreferences(MyContext.getSharedPreferencesName(),0);
+        boolean isAlarmSoundEnabled = sp.getBoolean(key,true);
+        return isAlarmSoundEnabled;
+    }
+
+    private void saveSoundSwitchValueAndSetCheckedToFalse() {
+        boolean isChecked = soundSwitch.isChecked();
+        soundSwitch.setChecked(false);
+        saveDataInSharedPreferences(ALARM_SOUND_KEY,isChecked);
     }
 }

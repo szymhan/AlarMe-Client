@@ -9,13 +9,14 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:layout_marginStart="5dp"
         android:orientation="vertical">
+
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ambulance"
             android:id="@+id/item_list_image"
-            android:layout_gravity="center_horizontal"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="left"
             />
     </LinearLayout>
     <LinearLayout
@@ -30,7 +31,7 @@
             android:fontFamily="@font/paytone"
             android:layout_weight="1"
             android:textSize="18sp"
-            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
             />
         <TextView
             android:layout_width="match_parent"
@@ -39,7 +40,7 @@
             android:id="@+id/item_list_date"
             android:fontFamily="@font/paytone"
             android:textSize="14sp"
-            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
             />
     </LinearLayout>
 
