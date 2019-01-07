@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -62,6 +63,15 @@ public class AlarmConfirmationActivity extends AppCompatActivity {
 
         vibrateAndPlaySound();
         addEventToDatabase();
+
+        Handler handler = new Handler();
+
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                finish();
+            }
+        }, 9500);
+
     }
 
 
@@ -99,7 +109,6 @@ public class AlarmConfirmationActivity extends AppCompatActivity {
             case ("Pogotowie"):
                 mainLinearLayout.setBackgroundColor(Color.parseColor(VehicleEnum.AMBULANCE.getColor()));
                 vehicleTypeImageView.setImageResource(R.drawable.ambulance);
-
                 break;
             case "Straż pożarna":
                 mainLinearLayout.setBackgroundColor(Color.parseColor(VehicleEnum.FIRE_BRIGADE.getColor()));
@@ -108,6 +117,11 @@ public class AlarmConfirmationActivity extends AppCompatActivity {
             case "Policja" :
                 mainLinearLayout.setBackgroundColor(Color.parseColor(VehicleEnum.POLICE.getColor()));
                 vehicleTypeImageView.setImageResource(R.drawable.police_car);
+                break;
+            case "Unknown":
+                mainLinearLayout.setBackgroundColor(Color.parseColor(VehicleEnum.AMBULANCE.getColor()));
+                vehicleTypeImageView.setImageResource(R.drawable.car);
+                break;
         }
 
     }

@@ -19,6 +19,7 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import pl.szymonhanzel.alarmeclient.context.MyContext;
+import pl.szymonhanzel.alarmeclient.service.FirebaseDataAnalyzeService;
 
 /**
  * SplashScreen jest używany do wywołania podstawowych metod i usług w tle, by poprawić
@@ -37,6 +38,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         getFirebaseToken();
         createNotificationChannel();
         MyContext.setDb(FirebaseFirestore.getInstance());
+        FirebaseDataAnalyzeService.updateVehicleTypesMap();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

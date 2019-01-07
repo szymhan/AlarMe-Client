@@ -1,6 +1,10 @@
-package pl.szymonhanzel.alarmeclient.service;
+package pl.szymonhanzel.alarmeclient.component;
 
-public class DistanceBearingCalculatorService {
+import android.location.Location;
+
+import pl.szymonhanzel.alarmeclient.model.RemoteMessageDataModel;
+
+public class DistanceCalculator {
 
     private static double angleFromCoordinate(double lat1, double long1, double lat2,
                                        double long2) {
@@ -30,8 +34,14 @@ public class DistanceBearingCalculatorService {
      * el2 End altitude in meters
      * @returns Distance in Meters
      */
-    public static double distance(double lat1, double lat2, double lon1,
-                                  double lon2, double el1, double el2) {
+    public static int distance(Location location, RemoteMessageDataModel rmdm) {
+
+        double lat1 = location.getLatitude();
+        double lon1 = location.getLongitude();
+        double el1 = 0;
+        double lat2 = rmdm.getLatitude();
+        double lon2 = rmdm.getLongitude();
+        double el2 = 0;
 
         final int R = 6371; // Radius of the earth
 
@@ -47,6 +57,6 @@ public class DistanceBearingCalculatorService {
 
         distance = Math.pow(distance, 2) + Math.pow(height, 2);
 
-        return Math.sqrt(distance);
+        return (int) Math.sqrt(distance);
     }
 }

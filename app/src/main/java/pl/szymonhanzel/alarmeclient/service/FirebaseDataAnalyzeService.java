@@ -24,7 +24,7 @@ public class FirebaseDataAnalyzeService {
     private static final String TAG = "FirebaseDataAnalyzeServ";
     private static Location lastKnownLocation;
     private static String vehicleTypeName;
-
+    private static Map<String, Object> vehicleTypesMap;
 
     public static Location getLastKnownLocation() {
         return lastKnownLocation;
@@ -34,14 +34,14 @@ public class FirebaseDataAnalyzeService {
         FirebaseDataAnalyzeService.lastKnownLocation = lastKnownLocation;
     }
 
-    public static void saveData(Alarm alarm){
+    public static void saveData(Alarm alarm) {
         MyContext.getDb()
                 .collection("users")
                 .add(alarm)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG,"Dokument został dodany z ID:" + documentReference.getId());
+                        Log.d(TAG, "Dokument został dodany z ID:" + documentReference.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -52,15 +52,16 @@ public class FirebaseDataAnalyzeService {
                 });
     }
 
-    public static void saveData(List<Location> locations){
-        if(!locations.isEmpty()){
-            for (Location location: locations){
-                Alarm alarmToSave = new Alarm(location.getLongitude(),location.getLatitude(),location.getAltitude());
+    public static void saveData(List<Location> locations) {
+        if (!locations.isEmpty()) {
+            for (Location location : locations) {
+                Alarm alarmToSave = new Alarm(location.getLongitude(), location.getLatitude(), location.getAltitude());
                 saveData(alarmToSave);
             }
         }
     }
-    public static boolean validateAlarm(Map<String,String> valuesMap) {
+
+    public static boolean validateAlarm(Map<String, String> valuesMap) {
         return valuesMap.containsKey("altitude")
                 && valuesMap.containsKey("latitude")
                 && valuesMap.containsKey("vehicleType")
@@ -68,24 +69,31 @@ public class FirebaseDataAnalyzeService {
 
     }
 
-    public static void convertVehicleTypeName(final RemoteMessageDataModel rmdm) {
-        DocumentReference docRef = MyContext.getDb().document("vehicles");
-        vehicleTypeName = "";
+    public static void updateVehicleTypesMap() {
+        DocumentReference docRef = MyContext.getDb().collection("vehicles").document("vehicles");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    DocumentSnapshot ds = task.getResult();
-                    if (ds.exists() && ds.getString(rmdm.getVehicleType())!=null) {
-                        vehicleTypeName = ds.getString(rmdm.getVehicleType());
-                    } else {
-                        vehicleTypeName = ds.getString("0");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    vehicleTypesMap = documentSnapshot.getData();
                 }
             }
         });
-        rmdm.setVehicleType(vehicleTypeName);
+    }
+
+    public static void convertVehicleTypeName(RemoteMessageDataModel rmdm) {
+        updateVehicleTypesMap();
+        try {
+            if(vehicleTypesMap.containsKey(rmdm.getVehicleType())){
+                vehicleTypeName = vehicleTypesMap.get(rmdm.getVehicleType()).toString();
+            } else {
+                vehicleTypeName = vehicleTypesMap.get("0").toString();
+            }
+            rmdm.setVehicleType(vehicleTypeName);
+
+        } catch (Exception e){
+            Log.e(TAG,"Getting vehicle type failed");
+        }
     }
 }

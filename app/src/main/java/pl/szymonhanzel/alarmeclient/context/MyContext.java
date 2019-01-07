@@ -16,7 +16,7 @@ public class MyContext extends Application {
     private static   FirebaseFirestore dbReference;
     private static String token;
     private static FirebaseMessaging messagingReference;
-    private static final double DISTANCE = 1000;
+    public static final double DISTANCE = 1000;
 
 
     public static double getDISTANCE() {

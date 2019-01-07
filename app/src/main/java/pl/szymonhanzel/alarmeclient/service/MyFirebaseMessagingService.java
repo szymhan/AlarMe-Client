@@ -10,6 +10,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import pl.szymonhanzel.alarmeclient.AlarmConfirmationActivity;
+import pl.szymonhanzel.alarmeclient.component.DistanceCalculator;
 import pl.szymonhanzel.alarmeclient.context.MyContext;
 import pl.szymonhanzel.alarmeclient.model.RemoteMessageDataModel;
 
@@ -33,26 +34,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG,"Message: " + remoteMessage.getFrom() + "validated!");
             System.out.println("Message: "+ remoteMessage.getFrom() + " validated!");
             RemoteMessageDataModel rmdm = new RemoteMessageDataModel(remoteMessage.getData());
-            FirebaseDataAnalyzeService.convertVehicleTypeName(rmdm);
             Location location = FirebaseDataAnalyzeService.getLastKnownLocation();
-            int distance =(int)DistanceBearingCalculatorService.distance(
-                    location.getLatitude(),
-                    rmdm.getLatitude(),
-                    location.getLongitude(),
-                    rmdm.getLongitude(),
-                    0,0);
-            if(distance<MyContext.getDISTANCE()){
-                SharedPreferences preferences = MyContext.getContext().getSharedPreferences("MyPref",0);
-                boolean isNotifyingEnabled = preferences.getBoolean(NOTIFICATIONS_KEY,false);
-                if(isNotifyingEnabled){
+            SharedPreferences preferences = MyContext.getContext().getSharedPreferences("MyPref",0);
+            boolean isNotifyingEnabled = preferences.getBoolean(NOTIFICATIONS_KEY,false);
+            int distance =DistanceCalculator.distance(location,rmdm);
+            if(distance<MyContext.DISTANCE && isNotifyingEnabled){
+                FirebaseDataAnalyzeService.convertVehicleTypeName(rmdm);
+                //TODO: oppznic wykonanie tego fragmentu
                     Intent intent = new Intent(MyContext.getContext(),AlarmConfirmationActivity.class);
                     intent.putExtra("vehicleType",rmdm.getVehicleType());
                     intent.putExtra("address",rmdm.getAddress());
                     intent.putExtra("distance",distance);
                     startActivity(intent);
-                }
             }
-
         }
     }
     @Override
