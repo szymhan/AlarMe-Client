@@ -53,7 +53,9 @@ public class AlarmConfirmationActivity extends AppCompatActivity {
         final Intent intent = getIntent();
         vehicleType = intent.getStringExtra("vehicleType");
         distance = intent.getIntExtra("distance",1000);
-        address = intent.getStringExtra("address");
+        //address = intent.getStringExtra("address");
+        address = "Gliwice";
+
 
 
        assignFrontElements();

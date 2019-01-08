@@ -31,21 +31,12 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-       <!-- <service
-            android:name=".service.GPSService"
-            android:description="@string/gps_serv_desc"
-            android:enabled="true"
-            android:exported="true"
-            android:label="@string/gps_serv_desc">
-            <intent-filter>
-                <action android:name="pl.szymonhanzel.alarmeclient.LONGRUNSERVICE" />
-            </intent-filter>
-        </service>
--->
         <service
             android:name=".service.GPSUpdatesLocationService"
             android:exported="false">
         </service>
+        <service android:name=".service.OnAppKilledService"
+            android:stopWithTask="false"/>
 
         <activity
             android:name=".SplashScreenActivity"

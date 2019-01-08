@@ -1,18 +1,23 @@
 package pl.szymonhanzel.alarmeclient;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -29,6 +34,7 @@ import pl.szymonhanzel.alarmeclient.fragment.SettingsFragment;
 import pl.szymonhanzel.alarmeclient.service.GPSUpdatesLocationService;
 import pl.szymonhanzel.alarmeclient.service.MyFirebaseMessagingService;
 import pl.szymonhanzel.alarmeclient.service.NotificationService;
+import pl.szymonhanzel.alarmeclient.service.OnAppKilledService;
 
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
@@ -73,14 +79,16 @@ GoogleApiClient.OnConnectionFailedListener{
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
        setContentView(R.layout.activity_main);
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+       if(Build.VERSION.SDK_INT>=26){
+           getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+       }
         initNavigationBar();
         buildGoogleApiClient();
-       // Intent gpsService =new Intent(getApplicationContext(),GPSService.class);
-        //getApplicationContext().startService(gpsService);
         Intent messagingService = new Intent(getApplicationContext(),MyFirebaseMessagingService.class);
         getApplicationContext().startService(messagingService);
-
-
+        Intent onKillAppService = new Intent(getApplicationContext(),OnAppKilledService.class);
+        getApplicationContext().startService(onKillAppService);
     }
 
     @Override
@@ -90,7 +98,7 @@ GoogleApiClient.OnConnectionFailedListener{
     }
 
     private void checkPermissions() {
-        if (!PermissionChecker.isGPSEnabled(getApplicationContext()) || !PermissionChecker.permissionGPSPermissionGranted()){
+        if (!PermissionChecker.isGPSEnabled(getApplicationContext())){
             showGPSEnablingDialog();
         }
     }
@@ -153,13 +161,13 @@ GoogleApiClient.OnConnectionFailedListener{
     }
 
     private void stopGPSService() {
-    //TODO: w przypadku negatywnej odpowiedzi powinniśmy coś zrobić z aplikacją (zamknięcie/ notyfikacja?)
+    finish();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        NotificationService.cancelNotifications();
+       // NotificationService.cancelNotifications();
     }
 
     @Override
@@ -198,11 +206,13 @@ GoogleApiClient.OnConnectionFailedListener{
 
     public void requestLocationUpdates() {
         try {
-
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, getPendingIntent());
         } catch (SecurityException e) {
             Log.e(TAG," Unable to request location updates in method requestLocationUpdates()");
+
+            Log.d(TAG, "Restarting Activity");
+            restartApp();
         }
     }
 
@@ -227,9 +237,16 @@ GoogleApiClient.OnConnectionFailedListener{
         return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    public void removeLocationUpdates(View view) {
-        Log.i(TAG, "Removing location updates");
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,
-                getPendingIntent());
+    private void restartApp() {
+        Handler handler = new Handler();
+
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+        }, 3000);
     }
+
 }

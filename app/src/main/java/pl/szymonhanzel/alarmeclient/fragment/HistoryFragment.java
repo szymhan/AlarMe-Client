@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import pl.szymonhanzel.alarmeclient.R;
@@ -97,9 +99,17 @@ public class HistoryFragment extends Fragment {
             ));
             cursor.moveToNext();
         }
-
         dbAdapter.close();
+        sortList();
+    }
 
+    private void sortList() {
+        Collections.sort(showList, new Comparator<SQLAlarmModel>() {
+            @Override
+            public int compare(SQLAlarmModel o1, SQLAlarmModel o2) {
+                return -o1.getDate().compareTo(o2.getDate());
+            }
+        });
     }
 
     private void clearHistory() {

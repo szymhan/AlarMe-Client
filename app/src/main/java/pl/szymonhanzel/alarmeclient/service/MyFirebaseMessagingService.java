@@ -36,7 +36,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             RemoteMessageDataModel rmdm = new RemoteMessageDataModel(remoteMessage.getData());
             Location location = FirebaseDataAnalyzeService.getLastKnownLocation();
             SharedPreferences preferences = MyContext.getContext().getSharedPreferences("MyPref",0);
-            boolean isNotifyingEnabled = preferences.getBoolean(NOTIFICATIONS_KEY,false);
+            boolean isNotifyingEnabled = preferences.getBoolean(NOTIFICATIONS_KEY,true);
             int distance =DistanceCalculator.distance(location,rmdm);
             if(distance<MyContext.DISTANCE && isNotifyingEnabled){
                 FirebaseDataAnalyzeService.convertVehicleTypeName(rmdm);
