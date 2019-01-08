@@ -29,19 +29,6 @@ public class NotificationService {
     }
 
 
-    public static Notification buildNotification() {
-        String textTitle = "AlarMe";
-        String textContent = "Praca w tle";
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyContext.getContext(), CHANNEL_ID)
-                .setSmallIcon(R.drawable.alarm)
-                .setContentTitle(textTitle)
-                .setContentText(textContent)
-                .setOngoing(true)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-// notificationId is a unique int for each notification that you must define
-        return mBuilder.build();
-    }
 
     public static void cancelNotifications() {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MyContext.getContext());

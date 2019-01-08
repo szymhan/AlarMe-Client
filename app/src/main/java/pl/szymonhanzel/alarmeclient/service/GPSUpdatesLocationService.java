@@ -4,8 +4,6 @@ import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.Service;
-import android.bluetooth.BluetoothClass;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -83,24 +81,6 @@ public class GPSUpdatesLocationService extends IntentService {
             }
         }
     }
-
-    /*private void startInForeground() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(MyContext.getContext(),NOTIFICATION_CHANNEL_ID)
-                .setSmallIcon(R.drawable.alarm)
-                .setContentTitle("AlarMe")
-                .setContentText("Praca w tle")
-                .setOngoing(true)
-                .setAutoCancel(false);
-        Notification notification=builder.build();
-        if(Build.VERSION.SDK_INT>=26) {
-            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
-           // channel.setSound(null,null);
-            channel.setDescription(NOTIFICATION_CHANNEL_DESC);
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(channel);
-        }
-        startForeground(NOTIFICATION_ID, notification);
-    }*/
 
     private void startInForeground() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(MyContext.getContext(),NOTIFICATION_CHANNEL_ID)

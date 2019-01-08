@@ -36,6 +36,10 @@ import pl.szymonhanzel.alarmeclient.service.MyFirebaseMessagingService;
 import pl.szymonhanzel.alarmeclient.service.NotificationService;
 import pl.szymonhanzel.alarmeclient.service.OnAppKilledService;
 
+/**
+ * Główna aktywność aplikacji. Odpowiada za sprawdzenie uprawnień oraz uruchomienia serwisu odczytującego wartości
+ * przekazywane przez moduł GPS wbudowany w telefon
+ */
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
 GoogleApiClient.OnConnectionFailedListener{
@@ -137,6 +141,9 @@ GoogleApiClient.OnConnectionFailedListener{
         checkPermissions();
     }
 
+    /**
+     * Ten dialog wywoływany jest w momencie, gdy użytkownik ma wyłączoną lokalizację w telefonie
+     */
     private void showGPSEnablingDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle(R.string.gps_not_found_title);  // GPS not found
@@ -186,8 +193,12 @@ GoogleApiClient.OnConnectionFailedListener{
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         final String text = "Exception while connecting to Google Play services";
         Log.w(TAG, text + ": " + connectionResult.getErrorMessage());
-
     }
+
+    /**
+     * metoda ustawiająca parametry żądania wysyłanego do modułu GPS, w tym interwał odnoszący się
+     * do częstości wysyłanych zapytań
+     */
 
     private void createLocationRequest() {
         mLocationRequest = new LocationRequest();

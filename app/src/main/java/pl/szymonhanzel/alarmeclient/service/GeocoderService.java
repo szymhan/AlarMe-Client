@@ -10,6 +10,10 @@ import java.util.Locale;
 
 import pl.szymonhanzel.alarmeclient.context.MyContext;
 
+/**
+ * Serwis służący do odczytywania miejsca na podstawie przesłanych współrzędnych
+ * geograficznych
+ */
 public class GeocoderService {
 
     private static final String TAG = "GeocoderService";
