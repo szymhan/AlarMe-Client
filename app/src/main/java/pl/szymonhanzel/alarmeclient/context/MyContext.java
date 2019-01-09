@@ -2,6 +2,7 @@ package pl.szymonhanzel.alarmeclient.context;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -10,7 +11,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
  * Klasa zadeklarowana w manifeście, pozwalająca na przekazywanie
  * kontekstu aplikacji do klas nie będąych aktywnościami/fragmentami
  */
-public class MyContext extends Application {
+public class MyContext extends MultiDexApplication {
     private static final String SHARED_PREFERENCES_NAME = "MyPref";
     private static Application sApplication;
     private static   FirebaseFirestore dbReference;
